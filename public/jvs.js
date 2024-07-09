@@ -2,7 +2,7 @@ const socket = io();
 
 
 
-let marker = null;
+const marker = {};
 
 if (navigator.geolocation) {
     navigator.geolocation.watchPosition(
@@ -16,7 +16,7 @@ if (navigator.geolocation) {
         },
         {
             enableHighAccuracy: true,
-            timeout: 5000,
+            timeout: 3000,
             maximumAge: 0
         }
     );
@@ -30,9 +30,9 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 }).addTo(map);
 socket.on("received-location", (data) => {
     const { id, latitude, longitude } = data;
-    // console.log("Received location from server:", data);
-    map.setView([latitude, longitude]);
-    marker = L.marker([latitude, longitude]).addTo(map)
+    map.setView([latitude, longitude],16);
+    if(marker[id])marker=setLatLng([latitude,longitude]);
+    else marker[id] = L.marker([latitude, longitude]).addTo(map)
         .bindPopup('Current Location')
         .openPopup();
 });
