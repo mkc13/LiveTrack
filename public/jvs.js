@@ -23,14 +23,14 @@ if (navigator.geolocation) {
 } else {
     console.log("Geolocation is not supported by this browser.");
 }
-const map = L.map('map').setView([51.505, -0.09], 17);
+const map = L.map('map').setView([51.505, -0.09], 10);
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '© OpenStreetMap contributors'
 }).addTo(map);
 socket.on("received-location", (data) => {
     const { id, latitude, longitude } = data;
-    map.setView([latitude, longitude],16);
+    map.setView([latitude, longitude],15);
     if(marker[id])marker=setLatLng([latitude,longitude]);
     else marker[id] = L.marker([latitude, longitude]).addTo(map)
         .bindPopup('Current Location')
