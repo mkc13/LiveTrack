@@ -6,14 +6,14 @@ if (navigator.geolocation) {
         (position) => {
             const { latitude, longitude, accuracy } = position.coords;
             console.log(`Latitude: ${latitude}, Longitude: ${longitude}, Accuracy: ${accuracy} meters`);
-            socket.emit("send-location", { latitude, longitude });
+            socket.emit("send-location", { latitude, longitude ,namee});
         },
         (error) => {
             console.log("Geolocation error:", error);
         },
         {
             enableHighAccuracy: true,
-            timeout: 1000,
+            timeout: 300,
             maximumAge: 0
         }
     );
@@ -28,14 +28,14 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 }).addTo(map);
 
 socket.on("received-location", (data) => {
-    const { id, latitude, longitude } = data;
+    const { id, latitude, longitude,namee: receivedName } = data;
     const latLng = [latitude, longitude];
 
     if (markers[id]) {
         markers[id].setLatLng(latLng);
     } else {
         markers[id] = L.marker(latLng).addTo(map)
-            .bindPopup('Current Location')
+            .bindPopup(receivedName)   
             .openPopup();
     }
 
