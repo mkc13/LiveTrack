@@ -26,9 +26,13 @@ io.on("connection", (socket) => {
 });
 
 app.get('/', (req, res) => {
-    res.render('index');
+    res.render('login');
 });
-
+app.get('/maps', (req, res) => {
+    const naam =req.query.name;
+    // console.log(naam);
+    res.render('index',{naam});
+});
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
     console.log(`Server Running on port ${PORT}`);
